@@ -1,0 +1,129 @@
+
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>طلبات الاسترجاع والاستبدال - LIGEER</title>
+    <style>
+        body { font-family: Arial, sans-serif; direction: rtl; text-align: right; padding: 20px; background-color: #f9f9f9; }
+        h1 { color: #333; text-align: center; }
+        label { display: block; margin: 10px 0 5px; }
+        input, select, button { width: 100%; padding: 10px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 5px; }
+        .product-block { border: 1px solid #ddd; padding: 15px; margin-bottom: 15px; background-color: #fff; border-radius: 5px; }
+        .add-product-btn { background-color: #28a745; color: #fff; cursor: pointer; }
+        .submit-btn { background-color: #007bff; color: #fff; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <h1>LIGEER - طلبات الاسترجاع والاستبدال</h1>
+    <form id="returnForm">
+        <label>اختر الإجراء المطلوب:</label>
+        <select name="action" required>
+            <option value="استرجاع">استرجاع</option>
+            <option value="استبدال">استبدال</option>
+        </select>
+
+        <label>رقم الطلب:</label>
+        <input type="text" name="orderNumber" required>
+
+        <div id="products">
+            <div class="product-block">
+                <label>رقم المنتج:</label>
+                <input type="text" name="productNumber[]" required>
+
+                <label>المقاس الحالي:</label>
+                <select name="currentSize[]">
+                    <option value="">-- اختياري --</option>
+                    <option value="S">S</option>
+                    <option value="M">M</option>
+                    <option value="L">L</option>
+                    <option value="XL">XL</option>
+                    <option value="2XL">2XL</option>
+                    <option value="3XL">3XL</option>
+                    <option value="4XL">4XL</option>
+                    <option value="5XL">5XL</option>
+                </select>
+
+                <label>المقاس المطلوب:</label>
+                <select name="requestedSize[]">
+                    <option value="">-- اختياري --</option>
+                    <option value="S">S</option>
+                    <option value="M">M</option>
+                    <option value="L">L</option>
+                    <option value="XL">XL</option>
+                    <option value="2XL">2XL</option>
+                    <option value="3XL">3XL</option>
+                    <option value="4XL">4XL</option>
+                    <option value="5XL">5XL</option>
+                </select>
+
+                <label>ارفع صورة (اختياري):</label>
+                <input type="file" name="image[]" accept="image/*" capture="environment">
+            </div>
+        </div>
+
+        <button type="button" class="add-product-btn" onclick="addProduct()">+ أضف منتج آخر</button>
+        <button type="submit" class="submit-btn">إرسال الطلب</button>
+    </form>
+
+    <script>
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbyoH4UKPcvC1WhbQs1_Ndy-6Ew0gOzE4SG7yGmQ68kqF1tWLWYVJF4VARlNW9G9voqo/exec';
+
+        const form = document.getElementById('returnForm');
+
+        form.addEventListener('submit', e => {
+            e.preventDefault();
+            const formData = new FormData(form);
+            fetch(scriptURL, { method: 'POST', body: formData })
+                .then(response => {
+                    alert('✅ تم استلام طلبك بنجاح!');
+                    form.reset();
+                    document.getElementById('products').innerHTML = `
+                        <div class="product-block">
+                            <label>رقم المنتج:</label>
+                            <input type="text" name="productNumber[]" required>
+
+                            <label>المقاس الحالي:</label>
+                            <select name="currentSize[]">
+                                <option value="">-- اختياري --</option>
+                                <option value="S">S</option>
+                                <option value="M">M</option>
+                                <option value="L">L</option>
+                                <option value="XL">XL</option>
+                                <option value="2XL">2XL</option>
+                                <option value="3XL">3XL</option>
+                                <option value="4XL">4XL</option>
+                                <option value="5XL">5XL</option>
+                            </select>
+
+                            <label>المقاس المطلوب:</label>
+                            <select name="requestedSize[]">
+                                <option value="">-- اختياري --</option>
+                                <option value="S">S</option>
+                                <option value="M">M</option>
+                                <option value="L">L</option>
+                                <option value="XL">XL</option>
+                                <option value="2XL">2XL</option>
+                                <option value="3XL">3XL</option>
+                                <option value="4XL">4XL</option>
+                                <option value="5XL">5XL</option>
+                            </select>
+
+                            <label>ارفع صورة (اختياري):</label>
+                            <input type="file" name="image[]" accept="image/*" capture="environment">
+                        </div>
+                    `;
+                })
+                .catch(error => alert('❌ حدث خطأ، حاول مرة أخرى.'));
+        });
+
+        function addProduct() {
+            const productBlock = document.querySelector('.product-block').cloneNode(true);
+            productBlock.querySelectorAll('input').forEach(input => input.value = '');
+            productBlock.querySelectorAll('select').forEach(select => select.value = '');
+            document.getElementById('products').appendChild(productBlock);
+        }
+    </script>
+</body>
+</html>
