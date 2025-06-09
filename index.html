@@ -69,52 +69,13 @@
 
     <script>
         const scriptURL = 'https://script.google.com/macros/s/AKfycbyoH4UKPcvC1WhbQs1_Ndy-6Ew0gOzE4SG7yGmQ68kqF1tWLWYVJF4VARlNW9G9voqo/exec';
-
         const form = document.getElementById('returnForm');
 
         form.addEventListener('submit', e => {
             e.preventDefault();
             const formData = new FormData(form);
             fetch(scriptURL, { method: 'POST', body: formData })
-                .then(response => {
-                    alert('✅ تم استلام طلبك بنجاح!');
-                    form.reset();
-                    document.getElementById('products').innerHTML = `
-                        <div class="product-block">
-                            <label>رقم المنتج:</label>
-                            <input type="text" name="productNumber[]" required>
-
-                            <label>المقاس الحالي:</label>
-                            <select name="currentSize[]">
-                                <option value="">-- اختياري --</option>
-                                <option value="S">S</option>
-                                <option value="M">M</option>
-                                <option value="L">L</option>
-                                <option value="XL">XL</option>
-                                <option value="2XL">2XL</option>
-                                <option value="3XL">3XL</option>
-                                <option value="4XL">4XL</option>
-                                <option value="5XL">5XL</option>
-                            </select>
-
-                            <label>المقاس المطلوب:</label>
-                            <select name="requestedSize[]">
-                                <option value="">-- اختياري --</option>
-                                <option value="S">S</option>
-                                <option value="M">M</option>
-                                <option value="L">L</option>
-                                <option value="XL">XL</option>
-                                <option value="2XL">2XL</option>
-                                <option value="3XL">3XL</option>
-                                <option value="4XL">4XL</option>
-                                <option value="5XL">5XL</option>
-                            </select>
-
-                            <label>ارفع صورة (اختياري):</label>
-                            <input type="file" name="image[]" accept="image/*" capture="environment">
-                        </div>
-                    `;
-                })
+                .then(response => alert('✅ تم استلام طلبك بنجاح!'))
                 .catch(error => alert('❌ حدث خطأ، حاول مرة أخرى.'));
         });
 
